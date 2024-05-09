@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,7 +23,7 @@ public class FirstFragment extends Fragment {
     private PokemonAdapter adapter;
 
     public FirstFragment() {
-        
+
     }
 
     @Override
@@ -31,7 +31,9 @@ public class FirstFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_first, container, false);
         recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        int numberOfColumns = 2;
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
 
         adapter = new PokemonAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
@@ -40,6 +42,7 @@ public class FirstFragment extends Fragment {
 
         return view;
     }
+
 
     private void loadPokemonData() {
         PokemonRepository repository = new PokemonRepository();

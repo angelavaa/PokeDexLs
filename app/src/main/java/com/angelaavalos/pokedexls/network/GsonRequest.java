@@ -46,7 +46,6 @@ public class GsonRequest<T> extends Request<T> {
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (Exception e) {
-            // Catching general exception to handle other unforeseen parsing issues
             return Response.error(new ParseError(e));
         }
     }
