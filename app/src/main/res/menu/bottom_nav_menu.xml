@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/pokedex"
+        android:title="Pokedex"
+        android:icon="@drawable/ic_pokedex"/>
+    <item
+        android:id="@+id/entrenador"
+        android:title="Entrenador"
+        android:icon="@drawable/ic_entrenador"/>
+    <item
+        android:id="@+id/tienda"
+        android:title="Tienda"
+        android:icon="@drawable/ic_tienda"/>
+</menu>
