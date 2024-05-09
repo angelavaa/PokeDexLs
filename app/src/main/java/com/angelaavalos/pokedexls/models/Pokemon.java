@@ -1,10 +1,9 @@
-package com.angelaavalos.pokedexls;
+package com.angelaavalos.pokedexls.models;
 
 public class Pokemon {
     private String name;
     private String url;
 
-    // Getters and setters
     public String getName() {
         return name;
     }

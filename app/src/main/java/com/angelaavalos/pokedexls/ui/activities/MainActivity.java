@@ -1,4 +1,4 @@
-package com.angelaavalos.pokedexls;
+package com.angelaavalos.pokedexls.ui.activities;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -6,6 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.angelaavalos.pokedexls.R;
+import com.angelaavalos.pokedexls.ui.fragments.FirstFragment;
+import com.angelaavalos.pokedexls.ui.fragments.SecondFragment;
+import com.angelaavalos.pokedexls.ui.fragments.ThirdFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 

@@ -1,4 +1,4 @@
-package com.angelaavalos.pokedexls;
+package com.angelaavalos.pokedexls.network;
 
 import android.content.Context;
 
@@ -25,8 +25,6 @@ public class VolleySingleton {
 
     public RequestQueue getRequestQueue() {
         if (requestQueue == null) {
-            // getApplicationContext() keeps you from leaking the
-            // Activity or BroadcastReceiver if someone passes one in.
             requestQueue = Volley.newRequestQueue(ctx.getApplicationContext());
         }
         return requestQueue;

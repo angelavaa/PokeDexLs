@@ -1,4 +1,4 @@
-package com.angelaavalos.pokedexls;
+package com.angelaavalos.pokedexls.network;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;

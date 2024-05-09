@@ -1,4 +1,4 @@
-package com.angelaavalos.pokedexls;
+package com.angelaavalos.pokedexls.ui.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.angelaavalos.pokedexls.models.Pokemon;
+import com.angelaavalos.pokedexls.ui.adapters.PokemonAdapter;
+import com.angelaavalos.pokedexls.network.api.PokemonRepository;
+import com.angelaavalos.pokedexls.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +23,7 @@ public class FirstFragment extends Fragment {
     private PokemonAdapter adapter;
 
     public FirstFragment() {
-        // Required empty public constructor
+        
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.angelaavalos.pokedexls;
+package com.angelaavalos.pokedexls.ui.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,6 +6,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.angelaavalos.pokedexls.models.Pokemon;
+import com.angelaavalos.pokedexls.R;
+
 import java.util.List;
 
 public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHolder> {

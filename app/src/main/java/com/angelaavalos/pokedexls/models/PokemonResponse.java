@@ -1,4 +1,6 @@
-package com.angelaavalos.pokedexls;
+package com.angelaavalos.pokedexls.models;
+
+import com.angelaavalos.pokedexls.models.Pokemon;
 
 import java.util.List;
 
