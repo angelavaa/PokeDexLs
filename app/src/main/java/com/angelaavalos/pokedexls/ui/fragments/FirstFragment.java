@@ -18,12 +18,11 @@ import com.angelaavalos.pokedexls.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirstFragment extends Fragment {
+public class FirstFragment extends Fragment implements PokemonAdapter.OnItemClickListener {
     private RecyclerView recyclerView;
     private PokemonAdapter adapter;
 
     public FirstFragment() {
-
     }
 
     @Override
@@ -35,14 +34,13 @@ public class FirstFragment extends Fragment {
         int numberOfColumns = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
 
-        adapter = new PokemonAdapter(new ArrayList<>());
+        adapter = new PokemonAdapter(new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
 
         loadPokemonData();
 
         return view;
     }
-
 
     private void loadPokemonData() {
         PokemonRepository repository = new PokemonRepository();
@@ -58,4 +56,16 @@ public class FirstFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onItemClick(Pokemon pokemon) {
+        if (pokemon != null) {
+            PokemonDetailFragment detailFragment = PokemonDetailFragment.newInstance(pokemon);
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.flFragment, detailFragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
 }
+
