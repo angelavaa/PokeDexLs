@@ -49,9 +49,6 @@ public class PokemonRepository {
         VolleySingleton.getInstance(context).addToRequestQueue(request);
     }
 
-
-
-
 }
 
 

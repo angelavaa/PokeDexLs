@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,7 @@ import java.util.List;
 public class FirstFragment extends Fragment implements PokemonAdapter.OnItemClickListener {
     private RecyclerView recyclerView;
     private PokemonAdapter adapter;
+    private SearchView searchView;
 
     public FirstFragment() {
     }
@@ -30,12 +32,27 @@ public class FirstFragment extends Fragment implements PokemonAdapter.OnItemClic
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_first, container, false);
         recyclerView = view.findViewById(R.id.recyclerView);
+        searchView = view.findViewById(R.id.searchView);
 
         int numberOfColumns = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
 
         adapter = new PokemonAdapter(new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
 
         loadPokemonData();
 
@@ -68,4 +85,3 @@ public class FirstFragment extends Fragment implements PokemonAdapter.OnItemClic
         }
     }
 }
-

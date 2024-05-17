@@ -6,16 +6,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Filter;
+import android.widget.Filterable;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.angelaavalos.pokedexls.models.Pokemon;
 import com.angelaavalos.pokedexls.R;
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHolder> {
+public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHolder> implements Filterable{
     private List<Pokemon> pokemonList;
+    private List<Pokemon> pokemonListFull;
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
@@ -24,6 +28,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
 
     public PokemonAdapter(List<Pokemon> pokemonList, OnItemClickListener listener) {
         this.pokemonList = pokemonList;
+        this.pokemonListFull = new ArrayList<>(pokemonList);
         this.listener = listener;
     }
 
@@ -61,6 +66,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
     public void updateData(List<Pokemon> newPokemonList) {
         pokemonList.clear();
         pokemonList.addAll(newPokemonList);
+        pokemonListFull = new ArrayList<>(newPokemonList); // Actualiza la lista completa
         notifyDataSetChanged();
     }
 
@@ -88,4 +94,39 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
             });
         }
     }
+
+    @Override
+    public Filter getFilter() {
+        return pokemonFilter;
+    }
+
+    private Filter pokemonFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Pokemon> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(pokemonListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (Pokemon pokemon : pokemonListFull) {
+                    if (pokemon.getName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(pokemon);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            pokemonList.clear();
+            pokemonList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }
