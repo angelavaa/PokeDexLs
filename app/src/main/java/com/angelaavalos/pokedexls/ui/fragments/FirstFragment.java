@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -23,6 +24,11 @@ public class FirstFragment extends Fragment implements PokemonAdapter.OnItemClic
     private RecyclerView recyclerView;
     private PokemonAdapter adapter;
     private SearchView searchView;
+    private ProgressBar progressBar;
+    private boolean isLoading = false;
+    private int limit = 15;
+    private int offset = 0;
+    private boolean isSearching = false;
 
     public FirstFragment() {
     }
@@ -33,6 +39,7 @@ public class FirstFragment extends Fragment implements PokemonAdapter.OnItemClic
         View view = inflater.inflate(R.layout.fragment_first, container, false);
         recyclerView = view.findViewById(R.id.recyclerView);
         searchView = view.findViewById(R.id.searchView);
+        progressBar = view.findViewById(R.id.progressBar);
 
         int numberOfColumns = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
@@ -44,13 +51,28 @@ public class FirstFragment extends Fragment implements PokemonAdapter.OnItemClic
             @Override
             public boolean onQueryTextSubmit(String query) {
                 adapter.getFilter().filter(query);
+                isSearching = true;
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 adapter.getFilter().filter(newText);
+                isSearching = newText.length() > 0;
                 return false;
+            }
+        });
+
+        // Detectar desplazamiento al final de la lista
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+                if (!isLoading && !isSearching && layoutManager != null && layoutManager.findLastCompletelyVisibleItemPosition() == adapter.getItemCount() - 1) {
+                    // El usuario ha llegado al final de la lista
+                    loadMorePokemonData();
+                }
             }
         });
 
@@ -60,16 +82,47 @@ public class FirstFragment extends Fragment implements PokemonAdapter.OnItemClic
     }
 
     private void loadPokemonData() {
+        isLoading = true;
+        progressBar.setVisibility(View.VISIBLE);
         PokemonRepository repository = new PokemonRepository();
-        repository.getPokemonList(getActivity(), new Response.Listener<List<Pokemon>>() {
+        repository.getPokemonList(getActivity(), limit, offset, new Response.Listener<List<Pokemon>>() {
             @Override
             public void onResponse(List<Pokemon> pokemons) {
                 adapter.updateData(pokemons);
+                offset += limit;
+                isLoading = false;
+                progressBar.setVisibility(View.GONE);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("PokemonLoadError", "Error: " + error.toString());
+                isLoading = false;
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void loadMorePokemonData() {
+        isLoading = true;
+        progressBar.setVisibility(View.VISIBLE);
+        PokemonRepository repository = new PokemonRepository();
+        repository.getPokemonList(getActivity(), limit, offset, new Response.Listener<List<Pokemon>>() {
+            @Override
+            public void onResponse(List<Pokemon> pokemons) {
+                List<Pokemon> currentList = new ArrayList<>(adapter.getPokemonList());
+                currentList.addAll(pokemons);
+                adapter.updateData(currentList);
+                offset += limit;
+                isLoading = false;
+                progressBar.setVisibility(View.GONE);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("PokemonLoadError", "Error: " + error.toString());
+                isLoading = false;
+                progressBar.setVisibility(View.GONE);
             }
         });
     }

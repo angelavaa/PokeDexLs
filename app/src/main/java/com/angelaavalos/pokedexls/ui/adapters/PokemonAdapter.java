@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHolder> implements Filterable{
+public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHolder> implements Filterable {
     private List<Pokemon> pokemonList;
     private List<Pokemon> pokemonListFull;
     private OnItemClickListener listener;
@@ -66,8 +66,11 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
     public void updateData(List<Pokemon> newPokemonList) {
         pokemonList.clear();
         pokemonList.addAll(newPokemonList);
-        pokemonListFull = new ArrayList<>(newPokemonList); // Actualiza la lista completa
         notifyDataSetChanged();
+    }
+
+    public List<Pokemon> getPokemonList() {
+        return pokemonList;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
