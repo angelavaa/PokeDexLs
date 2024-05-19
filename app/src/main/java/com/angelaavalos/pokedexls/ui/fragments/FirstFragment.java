@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -23,6 +24,10 @@ public class FirstFragment extends Fragment implements PokemonAdapter.OnItemClic
     private RecyclerView recyclerView;
     private PokemonAdapter adapter;
     private SearchView searchView;
+
+    private boolean isLoading = false;
+    private int limit = 15;
+    private int offset = 0;
 
     public FirstFragment() {
     }
@@ -54,22 +59,39 @@ public class FirstFragment extends Fragment implements PokemonAdapter.OnItemClic
             }
         });
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) { //error en @NonNull "Cannot resolve symbol 'NonNull'"
+                super.onScrolled(recyclerView, dx, dy);
+                GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+                if (!isLoading && layoutManager != null && layoutManager.findLastCompletelyVisibleItemPosition() == adapter.getItemCount() - 1) {
+                    // Llegamos al final de la lista, cargar más Pokémon
+                    loadPokemonData();
+                }
+            }
+        });
+
+
         loadPokemonData();
 
         return view;
     }
 
     private void loadPokemonData() {
+        isLoading = true;
         PokemonRepository repository = new PokemonRepository();
-        repository.getPokemonList(getActivity(), new Response.Listener<List<Pokemon>>() {
+        repository.getPokemonList(getActivity(), limit, offset, new Response.Listener<List<Pokemon>>() {
             @Override
             public void onResponse(List<Pokemon> pokemons) {
                 adapter.updateData(pokemons);
+                offset += limit;  // Incrementar el offset para la próxima carga
+                isLoading = false;
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("PokemonLoadError", "Error: " + error.toString());
+                isLoading = false;
             }
         });
     }

@@ -18,17 +18,16 @@ import java.util.List;
 public class PokemonRepository {
     private static final String URL = "https://pokeapi.co/api/v2/pokemon?limit=100";
 
-    public void getPokemonList(final Context context, final Response.Listener<List<Pokemon>> listener, final Response.ErrorListener errorListener) {
+    public void getPokemonList(final Context context, int limit, int offset, final Response.Listener<List<Pokemon>> listener, final Response.ErrorListener errorListener) {
+        String url = "https://pokeapi.co/api/v2/pokemon?limit=" + limit + "&offset=" + offset;
         GsonRequest<PokemonResponse> request = new GsonRequest<>(
                 Request.Method.GET,
-                "https://pokeapi.co/api/v2/pokemon?limit=100",
+                url,
                 new TypeToken<PokemonResponse>() {},
                 response -> {
-                    // Procesa cada Pokémon y obtén más detalles
                     List<Pokemon> allPokemons = new ArrayList<>();
                     for (Pokemon pokemon : response.getResults()) {
                         String urlDetails = pokemon.getUrl();
-                        // Solicitar detalles de cada Pokémon
                         GsonRequest<Pokemon> detailRequest = new GsonRequest<>(
                                 Request.Method.GET,
                                 urlDetails,
@@ -36,7 +35,7 @@ public class PokemonRepository {
                                 pokemonDetails -> {
                                     allPokemons.add(pokemonDetails);
                                     if (allPokemons.size() == response.getResults().size()) {
-                                        listener.onResponse(allPokemons);  // Llama al listener cuando todos los detalles han sido cargados
+                                        listener.onResponse(allPokemons);
                                     }
                                 },
                                 errorListener
@@ -48,6 +47,7 @@ public class PokemonRepository {
         );
         VolleySingleton.getInstance(context).addToRequestQueue(request);
     }
+
 
 }
 

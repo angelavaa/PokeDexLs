@@ -64,11 +64,12 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
     }
 
     public void updateData(List<Pokemon> newPokemonList) {
-        pokemonList.clear();
+        int initialSize = pokemonList.size();
         pokemonList.addAll(newPokemonList);
-        pokemonListFull = new ArrayList<>(newPokemonList); // Actualiza la lista completa
-        notifyDataSetChanged();
+        pokemonListFull.addAll(newPokemonList); // Actualiza la lista completa
+        notifyItemRangeInserted(initialSize, newPokemonList.size());
     }
+
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView pokemonName;
