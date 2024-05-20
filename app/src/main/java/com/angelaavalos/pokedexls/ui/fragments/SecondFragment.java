@@ -11,10 +11,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.angelaavalos.pokedexls.R;
 import com.angelaavalos.pokedexls.models.Trainer;
 import com.angelaavalos.pokedexls.network.api.TrainerRepository;
+import com.angelaavalos.pokedexls.ui.adapters.ItemAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -23,9 +26,9 @@ public class SecondFragment extends Fragment {
 
     private TextView trainerNameTextView;
     private TextView trainerMoneyTextView;
-    private TextView trainerItemsTextView;
     private EditText editTrainerName;
     private Button saveTrainerNameButton;
+    private RecyclerView trainerItemsRecyclerView;
 
     private Trainer currentTrainer;
 
@@ -39,16 +42,16 @@ public class SecondFragment extends Fragment {
 
         trainerNameTextView = view.findViewById(R.id.trainerName);
         trainerMoneyTextView = view.findViewById(R.id.trainerMoney);
-        trainerItemsTextView = view.findViewById(R.id.trainerItems);
         editTrainerName = view.findViewById(R.id.editTrainerName);
         saveTrainerNameButton = view.findViewById(R.id.saveTrainerNameButton);
+        trainerItemsRecyclerView = view.findViewById(R.id.trainerItemsRecyclerView);
 
         saveTrainerNameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String newName = editTrainerName.getText().toString().trim();
                 if (!newName.isEmpty()) {
-                    if (currentTrainer != null) { // Verifica que currentTrainer no sea null
+                    if (currentTrainer != null) {
                         currentTrainer.setName(newName);
                         saveTrainerData();
                     } else {
@@ -60,6 +63,7 @@ public class SecondFragment extends Fragment {
             }
         });
 
+        trainerItemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         loadTrainerData();
 
         return view;
@@ -75,9 +79,9 @@ public class SecondFragment extends Fragment {
                     currentTrainer = trainer;
                     trainerNameTextView.setText(trainer.getName());
                     trainerMoneyTextView.setText("Dinero: " + trainer.getMoney());
-                    trainerItemsTextView.setText("Items: " + (trainer.getItems() != null ? trainer.getItems().toString() : "[]"));
+                    trainerItemsRecyclerView.setAdapter(new ItemAdapter(trainer.getItems()));
                 } else {
-                    currentTrainer = new Trainer(); // Inicializar currentTrainer si es null
+                    currentTrainer = new Trainer();
                 }
             }
 

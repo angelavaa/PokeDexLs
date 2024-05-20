@@ -18,87 +18,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
 
-    <TextView
-        android:id="@+id/pokeballPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Precio: 200"
-        android:textSize="20sp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/storeItemsRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/trainerMoney"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <Button
-        android:id="@+id/buyPokeballButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Comprar Pokeball"
-        app:layout_constraintTop_toBottomOf="@id/pokeballPrice"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
-
-    <TextView
-        android:id="@+id/superballPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Precio: 500"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/buyPokeballButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <Button
-        android:id="@+id/buySuperballButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Comprar Superball"
-        app:layout_constraintTop_toBottomOf="@id/superballPrice"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
-
-    <TextView
-        android:id="@+id/ultraballPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Precio: 1500"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/buySuperballButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <Button
-        android:id="@+id/buyUltraballButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Comprar Ultraball"
-        app:layout_constraintTop_toBottomOf="@id/ultraballPrice"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
-
-    <TextView
-        android:id="@+id/masterballPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Precio: 100000"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/buyUltraballButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <Button
-        android:id="@+id/buyMasterballButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Comprar Masterball"
-        app:layout_constraintTop_toBottomOf="@id/masterballPrice"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
