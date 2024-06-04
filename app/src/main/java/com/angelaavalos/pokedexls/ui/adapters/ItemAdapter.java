@@ -12,11 +12,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import java.util.List;
+import java.util.Map;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
-    private List<String> items;
+    private Map<String, Integer> items;
 
-    public ItemAdapter(List<String> items) {
+    public ItemAdapter(Map<String, Integer> items) {
         this.items = items;
     }
 
@@ -29,8 +30,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        String itemName = items.get(position);
-        holder.itemName.setText(itemName);
+        String itemName = (String) items.keySet().toArray()[position];
+        int itemQuantity = items.get(itemName);
+        holder.itemName.setText(itemName + " " + itemQuantity);
 
         // Convertir itemName a minúsculas para asegurar que coincida con el nombre del archivo
         StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://pokedexls.appspot.com/items/" + itemName.toLowerCase() + ".png");

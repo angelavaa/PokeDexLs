@@ -20,6 +20,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Map;
+
 public class ThirdFragment extends Fragment {
 
     private TextView trainerMoneyTextView;
@@ -69,7 +71,12 @@ public class ThirdFragment extends Fragment {
     private void buyItem(String itemName, int itemPrice) {
         if (currentTrainer.getMoney() >= itemPrice) {
             currentTrainer.setMoney(currentTrainer.getMoney() - itemPrice);
-            currentTrainer.getItems().add(itemName);
+
+            // Actualizar la cantidad del ítem en el mapa
+            Map<String, Integer> items = currentTrainer.getItems();
+            int currentQuantity = items.getOrDefault(itemName, 0);
+            items.put(itemName, currentQuantity + 1);
+
             saveTrainerData();
             Toast.makeText(getActivity(), itemName + " comprado!", Toast.LENGTH_SHORT).show();
         } else {
