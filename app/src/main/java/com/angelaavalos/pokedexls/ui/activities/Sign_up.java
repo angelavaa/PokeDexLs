@@ -14,10 +14,9 @@ import com.angelaavalos.pokedexls.models.Trainer;
 import com.angelaavalos.pokedexls.network.api.TrainerRepository;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Sign_up extends AppCompatActivity {
 
@@ -57,7 +56,7 @@ public class Sign_up extends AppCompatActivity {
                                 Trainer trainer = new Trainer();
                                 trainer.setName(name);
                                 trainer.setMoney(0); // Valor inicial de dinero
-                                trainer.setItems(new ArrayList<>()); // Lista inicial de items vacía
+                                trainer.setItems(new HashMap<>()); // Mapa inicial de items vacío
                                 trainer.setCapturedPokemons(new ArrayList<>()); // Lista inicial de pokemons capturados vacía
 
                                 TrainerRepository repository = new TrainerRepository();
