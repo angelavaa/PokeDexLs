@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.angelaavalos.pokedexls.R;
+import com.angelaavalos.pokedexls.models.EvolutionChain;
 import com.angelaavalos.pokedexls.models.Pokemon;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -21,7 +22,6 @@ import java.util.List;
 import java.util.Random;
 
 public class PokemonDetailFragment extends Fragment {
-
     private static final String ARG_POKEMON_JSON = "pokemon_json";
 
     private Pokemon pokemon;
@@ -54,6 +54,7 @@ public class PokemonDetailFragment extends Fragment {
         TextView textViewDescription = view.findViewById(R.id.textViewPokemonDescription);
         TextView textViewType = view.findViewById(R.id.textViewPokemonType);
         TextView textViewAbility = view.findViewById(R.id.textViewPokemonAbility);
+        TextView textViewEvolutionStage = view.findViewById(R.id.textViewEvolutionStage);
         LinearLayout linearLayoutStats = view.findViewById(R.id.linearLayoutStats);
 
         if (pokemon != null) {
@@ -74,11 +75,13 @@ public class PokemonDetailFragment extends Fragment {
             }
             textViewType.setText(types.toString().trim());
 
-            // Seleccionar habilidad
             String ability = selectAbility(pokemon.getAbilities());
             textViewAbility.setText(ability);
 
-            // Mostrar estadísticas
+            // Determinar y mostrar la etapa evolutiva
+            String evolutionStage = getEvolutionStage(pokemon);
+            textViewEvolutionStage.setText("Evolution Stage: " + evolutionStage);
+
             linearLayoutStats.removeAllViews();
             for (Pokemon.Stat stat : pokemon.getStats()) {
                 View statView = createStatView(stat);
@@ -87,6 +90,47 @@ public class PokemonDetailFragment extends Fragment {
         }
 
         return view;
+    }
+
+    private String getEvolutionStage(Pokemon pokemon) {
+        if (pokemon.getEvolutionChain() == null) {
+            return "Unknown";
+        }
+
+        EvolutionChain.Chain chain = pokemon.getEvolutionChain().getChain();
+        return determineStage(chain, pokemon.getName(), 1);
+    }
+
+    private String determineStage(Object chainPart, String pokemonName, int currentStage) {
+        EvolutionChain.Species species;
+        List<EvolutionChain.Chain.EvolvesTo> evolvesToList;
+
+        if (chainPart instanceof EvolutionChain.Chain) {
+            species = ((EvolutionChain.Chain) chainPart).getSpecies();
+            evolvesToList = ((EvolutionChain.Chain) chainPart).getEvolvesTo();
+        } else if (chainPart instanceof EvolutionChain.Chain.EvolvesTo) {
+            species = ((EvolutionChain.Chain.EvolvesTo) chainPart).getSpecies();
+            evolvesToList = ((EvolutionChain.Chain.EvolvesTo) chainPart).getEvolvesTo();
+        } else {
+            return "Unknown";
+        }
+
+        if (species.getName().equalsIgnoreCase(pokemonName)) {
+            switch (currentStage) {
+                case 1: return "First Evolution";
+                case 2: return "Second Evolution";
+                case 3: return "Third Evolution";
+                default: return "Unknown";
+            }
+        }
+
+        for (EvolutionChain.Chain.EvolvesTo evolvesTo : evolvesToList) {
+            String stage = determineStage(evolvesTo, pokemonName, currentStage + 1);
+            if (!stage.equals("Unknown")) {
+                return stage;
+            }
+        }
+        return "Unknown";
     }
 
     private String selectAbility(List<Pokemon.Ability> abilities) {
