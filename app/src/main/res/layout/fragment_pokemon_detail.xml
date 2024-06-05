@@ -58,12 +58,22 @@
             android:textSize="22sp"
             android:text="Ability:" />
 
+
         <LinearLayout
             android:id="@+id/linearLayoutStats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingTop="8dp"  />
+
+        <TextView
+            android:id="@+id/textViewEvolutionStage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="8dp"
+            android:textSize="18sp"
+            android:text="Evolution Stage:" />
 
     </LinearLayout>
 </ScrollView>
