@@ -1,6 +1,8 @@
 package com.angelaavalos.pokedexls.models;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
@@ -38,7 +40,10 @@ public class Trainer {
     }
 
     public void setItems(Map<String, Integer> items) {
-        this.items = items;
+        this.items = new HashMap<>();
+        for (Map.Entry<String, Integer> entry : items.entrySet()) {
+            this.items.put(entry.getKey().toLowerCase(), entry.getValue());
+        }
     }
 
     public List<Pokemon> getCapturedPokemons() {
@@ -48,4 +53,30 @@ public class Trainer {
     public void setCapturedPokemons(List<Pokemon> capturedPokemons) {
         this.capturedPokemons = capturedPokemons;
     }
+
+    public boolean hasItem(String itemName) {
+        itemName = itemName.toLowerCase();
+        Log.d("Trainer", "Checking item: " + itemName + " count: " + items.getOrDefault(itemName, 0));
+        return items.getOrDefault(itemName, 0) > 0;
+    }
+
+    public void useItem(String itemName) {
+        itemName = itemName.toLowerCase();
+        int count = items.getOrDefault(itemName, 0);
+        if (count > 0) {
+            items.put(itemName, count - 1);
+            Log.d("Trainer", "Using item: " + itemName + ". Remaining: " + (count - 1));
+        }
+    }
+
+    public void addCapturedPokemon(Pokemon pokemon) {
+        if (capturedPokemons.size() < 6) {
+            capturedPokemons.add(pokemon);
+        }
+    }
+
+    public void removeCapturedPokemon(Pokemon pokemon) {
+        capturedPokemons.remove(pokemon);
+    }
 }
+

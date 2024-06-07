@@ -75,5 +75,28 @@
             android:textSize="18sp"
             android:text="Evolution Stage:" />
 
+        <Spinner
+            android:id="@+id/pokeball_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center" />
+
+        <Button
+            android:id="@+id/capture_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Capturar"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/textViewCaptureItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Item de captura: "
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center" />
+
     </LinearLayout>
 </ScrollView>

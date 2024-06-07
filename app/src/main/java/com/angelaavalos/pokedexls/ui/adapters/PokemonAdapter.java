@@ -126,8 +126,14 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             pokemonList.clear();
-            pokemonList.addAll((List) results.values);
+            if (results.values != null) {
+                pokemonList.addAll((List) results.values);
+            } else {
+                // Log or handle the case when results.values is null
+                Log.e("PokemonAdapter", "Filter results are null");
+            }
             notifyDataSetChanged();
         }
+
     };
 }

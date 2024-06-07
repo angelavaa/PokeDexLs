@@ -55,7 +55,7 @@ public class Sign_up extends AppCompatActivity {
                                 String userId = user.getUid();
                                 Trainer trainer = new Trainer();
                                 trainer.setName(name);
-                                trainer.setMoney(0); // Valor inicial de dinero
+                                trainer.setMoney(200); // Valor inicial de dinero
                                 trainer.setItems(new HashMap<>()); // Mapa inicial de items vacío
                                 trainer.setCapturedPokemons(new ArrayList<>()); // Lista inicial de pokemons capturados vacía
 

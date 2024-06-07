@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.angelaavalos.pokedexls.R;
 import com.angelaavalos.pokedexls.models.Trainer;
 import com.angelaavalos.pokedexls.network.api.TrainerRepository;
+import com.angelaavalos.pokedexls.ui.adapters.CapturedPokemonAdapter;
 import com.angelaavalos.pokedexls.ui.adapters.ItemAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,7 +30,7 @@ public class SecondFragment extends Fragment {
     private EditText editTrainerName;
     private Button saveTrainerNameButton;
     private RecyclerView trainerItemsRecyclerView;
-
+    private RecyclerView capturedPokemonsRecyclerView;
     private Trainer currentTrainer;
 
     public SecondFragment() {
@@ -45,25 +46,25 @@ public class SecondFragment extends Fragment {
         editTrainerName = view.findViewById(R.id.editTrainerName);
         saveTrainerNameButton = view.findViewById(R.id.saveTrainerNameButton);
         trainerItemsRecyclerView = view.findViewById(R.id.trainerItemsRecyclerView);
+        capturedPokemonsRecyclerView = view.findViewById(R.id.capturedPokemonsRecyclerView);
 
-        saveTrainerNameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String newName = editTrainerName.getText().toString().trim();
-                if (!newName.isEmpty()) {
-                    if (currentTrainer != null) {
-                        currentTrainer.setName(newName);
-                        saveTrainerData();
-                    } else {
-                        Toast.makeText(getActivity(), "No se ha cargado la información del entrenador", Toast.LENGTH_SHORT).show();
-                    }
+        saveTrainerNameButton.setOnClickListener(v -> {
+            String newName = editTrainerName.getText().toString().trim();
+            if (!newName.isEmpty()) {
+                if (currentTrainer != null) {
+                    currentTrainer.setName(newName);
+                    saveTrainerData();
                 } else {
-                    Toast.makeText(getActivity(), "El nombre no puede estar vacío", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "No se ha cargado la información del entrenador", Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Toast.makeText(getActivity(), "El nombre no puede estar vacío", Toast.LENGTH_SHORT).show();
             }
         });
 
         trainerItemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        capturedPokemonsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         loadTrainerData();
 
         return view;
@@ -80,6 +81,7 @@ public class SecondFragment extends Fragment {
                     trainerNameTextView.setText(trainer.getName());
                     trainerMoneyTextView.setText("Dinero: " + trainer.getMoney());
                     trainerItemsRecyclerView.setAdapter(new ItemAdapter(trainer.getItems()));
+                    capturedPokemonsRecyclerView.setAdapter(new CapturedPokemonAdapter(trainer.getCapturedPokemons()));
                 } else {
                     currentTrainer = new Trainer();
                 }
@@ -100,3 +102,4 @@ public class SecondFragment extends Fragment {
         trainerNameTextView.setText(currentTrainer.getName());
     }
 }
+
