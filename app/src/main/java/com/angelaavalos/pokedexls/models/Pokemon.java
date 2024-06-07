@@ -13,20 +13,7 @@ public class Pokemon {
     private List<Ability> abilities;
     private List<Stat> stats;
     private EvolutionChain evolutionChain;
-
-    @Override
-    public String toString() {
-        return "Pokemon{" +
-                "name='" + name + '\'' +
-                ", url='" + url + '\'' +
-                ", sprites=" + sprites +
-                ", types=" + types +
-                ", description='" + description + '\'' +
-                ", abilities=" + abilities +
-                ", stats=" + stats +
-                ", evolutionChain=" + evolutionChain +
-                '}';
-    }
+    private String captureItem;
 
     public String getName() {
         return name;
@@ -259,5 +246,13 @@ public class Pokemon {
 
     private int getRandomValue(int min, int max) {
         return (int) (Math.random() * (max - min + 1)) + min;
+    }
+
+    public String getCaptureItem() {
+        return captureItem;
+    }
+
+    public void setCaptureItem(String captureItem) {
+        this.captureItem = captureItem;
     }
 }

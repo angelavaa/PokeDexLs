@@ -1,21 +1,31 @@
 package com.angelaavalos.pokedexls.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.angelaavalos.pokedexls.R;
 import com.angelaavalos.pokedexls.models.EvolutionChain;
 import com.angelaavalos.pokedexls.models.Pokemon;
+import com.angelaavalos.pokedexls.models.Trainer;
+import com.angelaavalos.pokedexls.network.api.TrainerRepository;
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -25,6 +35,10 @@ public class PokemonDetailFragment extends Fragment {
     private static final String ARG_POKEMON_JSON = "pokemon_json";
 
     private Pokemon pokemon;
+    private Spinner pokeballSpinner;
+    private Button captureButton;
+    private TextView textViewCaptureItem;
+    private String[] pokeballs = {"Pokeball", "Superball", "Ultraball", "Masterball"};
 
     public static PokemonDetailFragment newInstance(Pokemon pokemon) {
         PokemonDetailFragment fragment = new PokemonDetailFragment();
@@ -56,6 +70,7 @@ public class PokemonDetailFragment extends Fragment {
         TextView textViewAbility = view.findViewById(R.id.textViewPokemonAbility);
         TextView textViewEvolutionStage = view.findViewById(R.id.textViewEvolutionStage);
         LinearLayout linearLayoutStats = view.findViewById(R.id.linearLayoutStats);
+        textViewCaptureItem = view.findViewById(R.id.textViewCaptureItem);
 
         if (pokemon != null) {
             Glide.with(this)
@@ -87,9 +102,93 @@ public class PokemonDetailFragment extends Fragment {
                 View statView = createStatView(stat);
                 linearLayoutStats.addView(statView);
             }
+
+            textViewCaptureItem.setText("Item de captura: " + (pokemon.getCaptureItem() != null ? pokemon.getCaptureItem() : "N/A"));
         }
 
+        pokeballSpinner = view.findViewById(R.id.pokeball_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, pokeballs);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        pokeballSpinner.setAdapter(adapter);
+
+        captureButton = view.findViewById(R.id.capture_button);
+        captureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attemptCapturePokemon();
+            }
+        });
+
         return view;
+    }
+
+    private void attemptCapturePokemon() {
+        if (pokemon == null) return;
+
+        String selectedPokeball = pokeballSpinner.getSelectedItem().toString().toLowerCase();
+        TrainerRepository trainerRepository = new TrainerRepository();
+        trainerRepository.getTrainerReference().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Trainer trainer = snapshot.getValue(Trainer.class);
+                if (trainer != null) {
+                    Log.d("Trainer", "Trainer loaded: " + trainer.getName());
+                    Log.d("Trainer", "Trainer items: " + trainer.getItems());
+
+                    if (trainer.getCapturedPokemons().size() >= 6) {
+                        Toast.makeText(getContext(), "No puedes capturar más de 6 Pokémon", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (!trainer.hasItem(selectedPokeball)) {
+                        Toast.makeText(getContext(), "No tienes suficiente " + selectedPokeball, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    double captureProbability = calculateCaptureProbability(selectedPokeball, pokemon.getTypePokemon());
+                    double randomValue = Math.random();
+
+                    if (randomValue <= captureProbability) {
+                        trainer.useItem(selectedPokeball); // Usar el ítem
+                        pokemon.setCaptureItem(selectedPokeball); // Guardar el ítem de captura
+                        trainer.addCapturedPokemon(pokemon);
+                        trainer.setMoney(trainer.getMoney() + calculateCaptureMoney(pokemon.getTypePokemon()));
+                        trainerRepository.saveTrainer(trainer);
+                        Toast.makeText(getContext(), pokemon.getName() + " capturado!", Toast.LENGTH_SHORT).show();
+                        textViewCaptureItem.setText("Item de captura: " + selectedPokeball);
+                    } else {
+                        Toast.makeText(getContext(), pokemon.getName() + " escapó!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Error al capturar Pokémon", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
+    private double calculateCaptureProbability(String pokeball, int typePokemon) {
+        double baseProbability = (600.0 - typePokemon) / 600.0;
+        switch (pokeball) {
+            case "pokeball":
+                return baseProbability * 1;
+            case "superball":
+                return baseProbability * 1.5;
+            case "ultraball":
+                return baseProbability * 2;
+            case "masterball":
+                return 1.0;
+            default:
+                return 0;
+        }
+    }
+
+    private int calculateCaptureMoney(int typePokemon) {
+        return 400 + 100 * typePokemon;
     }
 
     private String getEvolutionStage(Pokemon pokemon) {
