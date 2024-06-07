@@ -15,6 +15,9 @@
         android:theme="@style/Theme.PokeDexLS"
         tools:targetApi="31">
         <activity
+            android:name=".ui.adapters.CapturedPokemonAdapter"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.Sign_up"
             android:exported="false" />
         <activity

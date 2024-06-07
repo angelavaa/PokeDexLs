@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,72 +7,76 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragments.SecondFragment">
 
-    <TextView
-        android:id="@+id/trainerName"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nombre del entrenador"
-        android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <EditText
-        android:id="@+id/editTrainerName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Actualizar nombre"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/trainerName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"/>
+        <TextView
+            android:id="@+id/trainerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre del entrenador"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"/>
 
-    <Button
-        android:id="@+id/saveTrainerNameButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Guardar"
-        app:layout_constraintTop_toBottomOf="@id/editTrainerName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        <EditText
+            android:id="@+id/editTrainerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Actualizar nombre"
+            android:textSize="20sp"
+            android:layout_marginTop="16dp"/>
 
-    <TextView
-        android:id="@+id/trainerMoney"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dinero"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/saveTrainerNameButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        <Button
+            android:id="@+id/saveTrainerNameButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Guardar"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"/>
 
-    <TextView
-        android:id="@+id/trainerItemsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Items"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/trainerMoney"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        <TextView
+            android:id="@+id/trainerMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dinero"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trainerItemsRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/trainerItemsLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/trainerItemsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Items"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trainerItemsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/capturedPokemonsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pokémons Capturados"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/capturedPokemonsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"/>
+    </LinearLayout>
+</ScrollView>

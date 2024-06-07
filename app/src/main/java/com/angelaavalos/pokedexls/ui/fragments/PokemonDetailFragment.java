@@ -151,6 +151,8 @@ public class PokemonDetailFragment extends Fragment {
                     if (randomValue <= captureProbability) {
                         trainer.useItem(selectedPokeball); // Usar el ítem
                         pokemon.setCaptureItem(selectedPokeball); // Guardar el ítem de captura
+                        pokemon.setPokeballName(selectedPokeball); // Guardar el nombre de la pokeball
+                        Log.d("PokemonDetailFragment", "Captured pokeball: " + selectedPokeball);
                         trainer.addCapturedPokemon(pokemon);
                         trainer.setMoney(trainer.getMoney() + calculateCaptureMoney(pokemon.getTypePokemon()));
                         trainerRepository.saveTrainer(trainer);
@@ -168,7 +170,6 @@ public class PokemonDetailFragment extends Fragment {
             }
         });
     }
-
 
 
     private double calculateCaptureProbability(String pokeball, int typePokemon) {

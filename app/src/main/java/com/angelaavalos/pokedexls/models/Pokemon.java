@@ -14,6 +14,8 @@ public class Pokemon {
     private List<Stat> stats;
     private EvolutionChain evolutionChain;
     private String captureItem;
+    private String pokeballImage;
+    private String pokeballName;
 
     public String getName() {
         return name;
@@ -254,5 +256,20 @@ public class Pokemon {
 
     public void setCaptureItem(String captureItem) {
         this.captureItem = captureItem;
+    }
+    public String getPokeballImage() {
+        return pokeballImage;
+    }
+
+    public void setPokeballImage(String pokeballImage) {
+        this.pokeballImage = pokeballImage;
+    }
+
+    public String getPokeballName() {
+        return pokeballName;
+    }
+
+    public void setPokeballName(String pokeballName) {
+        this.pokeballName = pokeballName;
     }
 }
