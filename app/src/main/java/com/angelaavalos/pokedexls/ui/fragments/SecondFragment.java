@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.angelaavalos.pokedexls.R;
+import com.angelaavalos.pokedexls.models.Pokemon;
 import com.angelaavalos.pokedexls.models.Trainer;
 import com.angelaavalos.pokedexls.network.api.TrainerRepository;
 import com.angelaavalos.pokedexls.ui.adapters.CapturedPokemonAdapter;
@@ -31,7 +32,6 @@ public class SecondFragment extends Fragment {
     private RecyclerView trainerItemsRecyclerView;
     private RecyclerView capturedPokemonsRecyclerView;
     private Trainer currentTrainer;
-    private CapturedPokemonAdapter capturedPokemonAdapter;
 
     public SecondFragment() {
         // Required empty public constructor
@@ -81,13 +81,7 @@ public class SecondFragment extends Fragment {
                     trainerNameTextView.setText(trainer.getName());
                     trainerMoneyTextView.setText("Dinero: " + trainer.getMoney());
                     trainerItemsRecyclerView.setAdapter(new ItemAdapter(trainer.getItems()));
-                    capturedPokemonAdapter = new CapturedPokemonAdapter(trainer.getCapturedPokemons(), pokemon -> {
-                        currentTrainer.removeCapturedPokemon(pokemon);
-                        saveTrainerData();
-                        capturedPokemonAdapter.removePokemon(pokemon);
-                        Toast.makeText(getActivity(), pokemon.getName() + " eliminado!", Toast.LENGTH_SHORT).show();
-                    });
-                    capturedPokemonsRecyclerView.setAdapter(capturedPokemonAdapter);
+                    capturedPokemonsRecyclerView.setAdapter(new CapturedPokemonAdapter(trainer.getCapturedPokemons(), pokemon -> releasePokemon(pokemon)));
                 } else {
                     currentTrainer = new Trainer();
                 }
@@ -100,13 +94,22 @@ public class SecondFragment extends Fragment {
         });
     }
 
+    private void releasePokemon(Pokemon pokemon) {
+        try {
+            currentTrainer.removeCapturedPokemon(pokemon);
+            saveTrainerData();
+            Toast.makeText(getActivity(), pokemon.getName() + " ha sido liberado", Toast.LENGTH_SHORT).show();
+        } catch (IllegalStateException e) {
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void saveTrainerData() {
         TrainerRepository repository = new TrainerRepository();
         repository.saveTrainer(currentTrainer);
-        Toast.makeText(getActivity(), "Datos del entrenador actualizados", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Datos actualizados", Toast.LENGTH_SHORT).show();
         editTrainerName.setText("");
         trainerNameTextView.setText(currentTrainer.getName());
-        trainerMoneyTextView.setText("Dinero: " + currentTrainer.getMoney());
     }
 }
 
