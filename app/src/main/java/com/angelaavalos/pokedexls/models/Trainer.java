@@ -81,6 +81,16 @@ public class Trainer {
         }
     }
 
+    public boolean isPokemonCaptured(String pokemonName) {
+        for (Pokemon capturedPokemon : capturedPokemons) {
+            if (capturedPokemon.getName().equalsIgnoreCase(pokemonName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public void removeCapturedPokemon(Pokemon pokemon) {
         capturedPokemons.remove(pokemon);
     }

@@ -24,7 +24,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 public class SecondFragment extends Fragment {
-
     private TextView trainerNameTextView;
     private TextView trainerMoneyTextView;
     private EditText editTrainerName;
@@ -32,6 +31,7 @@ public class SecondFragment extends Fragment {
     private RecyclerView trainerItemsRecyclerView;
     private RecyclerView capturedPokemonsRecyclerView;
     private Trainer currentTrainer;
+    private CapturedPokemonAdapter capturedPokemonAdapter;
 
     public SecondFragment() {
         // Required empty public constructor
@@ -81,7 +81,13 @@ public class SecondFragment extends Fragment {
                     trainerNameTextView.setText(trainer.getName());
                     trainerMoneyTextView.setText("Dinero: " + trainer.getMoney());
                     trainerItemsRecyclerView.setAdapter(new ItemAdapter(trainer.getItems()));
-                    capturedPokemonsRecyclerView.setAdapter(new CapturedPokemonAdapter(trainer.getCapturedPokemons()));
+                    capturedPokemonAdapter = new CapturedPokemonAdapter(trainer.getCapturedPokemons(), pokemon -> {
+                        currentTrainer.removeCapturedPokemon(pokemon);
+                        saveTrainerData();
+                        capturedPokemonAdapter.removePokemon(pokemon);
+                        Toast.makeText(getActivity(), pokemon.getName() + " eliminado!", Toast.LENGTH_SHORT).show();
+                    });
+                    capturedPokemonsRecyclerView.setAdapter(capturedPokemonAdapter);
                 } else {
                     currentTrainer = new Trainer();
                 }
@@ -97,9 +103,11 @@ public class SecondFragment extends Fragment {
     private void saveTrainerData() {
         TrainerRepository repository = new TrainerRepository();
         repository.saveTrainer(currentTrainer);
-        Toast.makeText(getActivity(), "Nombre actualizado", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Datos del entrenador actualizados", Toast.LENGTH_SHORT).show();
         editTrainerName.setText("");
         trainerNameTextView.setText(currentTrainer.getName());
+        trainerMoneyTextView.setText("Dinero: " + currentTrainer.getMoney());
     }
 }
+
 
