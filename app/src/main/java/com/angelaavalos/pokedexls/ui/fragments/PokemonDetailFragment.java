@@ -140,6 +140,11 @@ public class PokemonDetailFragment extends Fragment {
                         return;
                     }
 
+                    if (trainer.isPokemonCaptured(pokemon.getName())) {
+                        Toast.makeText(getContext(), pokemon.getName() + " ya ha sido capturado!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     if (!trainer.hasItem(selectedPokeball)) {
                         Toast.makeText(getContext(), "No tienes suficiente " + selectedPokeball, Toast.LENGTH_SHORT).show();
                         return;
@@ -170,6 +175,7 @@ public class PokemonDetailFragment extends Fragment {
             }
         });
     }
+
 
 
     private double calculateCaptureProbability(String pokeball, int typePokemon) {
