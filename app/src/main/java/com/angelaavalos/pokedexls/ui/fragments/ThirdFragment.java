@@ -71,18 +71,14 @@ public class ThirdFragment extends Fragment {
     private void buyItem(String itemName, int itemPrice) {
         if (currentTrainer.getMoney() >= itemPrice) {
             currentTrainer.setMoney(currentTrainer.getMoney() - itemPrice);
-
-            // Actualizar la cantidad del ítem en el mapa
-            Map<String, Integer> items = currentTrainer.getItems();
-            int currentQuantity = items.getOrDefault(itemName, 0);
-            items.put(itemName, currentQuantity + 1);
-
+            currentTrainer.addItem(itemName, 1);
             saveTrainerData();
             Toast.makeText(getActivity(), itemName + " comprado!", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getActivity(), "Dinero insuficiente", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     private void saveTrainerData() {
         TrainerRepository repository = new TrainerRepository();

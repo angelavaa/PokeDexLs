@@ -40,6 +40,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                 .addOnFailureListener(e -> holder.itemImage.setImageResource(R.drawable.ic_pokedex));
     }
 
+
     @Override
     public int getItemCount() {
         return items.size();

@@ -170,7 +170,7 @@ public class PokemonDetailFragment extends Fragment {
             }
         });
     }
-
+    
 
     private double calculateCaptureProbability(String pokeball, int typePokemon) {
         double baseProbability = (600.0 - typePokemon) / 600.0;

@@ -69,6 +69,12 @@ public class Trainer {
         }
     }
 
+    public void addItem(String itemName, int quantity) {
+        itemName = itemName.toLowerCase();
+        int currentQuantity = items.getOrDefault(itemName, 0);
+        items.put(itemName, currentQuantity + quantity);
+    }
+
     public void addCapturedPokemon(Pokemon pokemon) {
         if (capturedPokemons.size() < 6) {
             capturedPokemons.add(pokemon);
