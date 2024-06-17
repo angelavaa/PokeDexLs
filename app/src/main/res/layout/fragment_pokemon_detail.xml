@@ -4,24 +4,34 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="10dp"
-        tools:context=".ui.fragments.PokemonDetailFragment">
+        android:padding="5dp">
 
         <ImageView
             android:id="@+id/imageViewPokemonFront"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"/>
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            />
 
         <ImageView
             android:id="@+id/imageViewPokemonBack"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp" />
+
+        <!-- Nombre del Pokemon -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:paddingTop="16dp"
             android:layout_gravity="center" />
 
         <TextView
@@ -29,25 +39,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="30sp"
-            android:textStyle="bold"
+            android:textSize="22sp"
             android:paddingTop="8dp" />
 
+        <!-- Tipo del Pokemon -->
         <TextView
-            android:id="@+id/textViewPokemonDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingTop="4dp" />
+            android:text="Tipo"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:paddingTop="16dp"
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/textViewPokemonType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textStyle="bold"
             android:textSize="22sp"
             android:paddingTop="4dp" />
+
+        <!-- Habilidad del Pokemon -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Habilidad"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:paddingTop="16dp"
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/textViewPokemonAbility"
@@ -58,13 +79,32 @@
             android:textSize="22sp"
             android:text="Ability:" />
 
+        <!-- Estadísticas del Pokemon -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estadísticas"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:paddingTop="16dp"
+            android:layout_gravity="center" />
 
         <LinearLayout
             android:id="@+id/linearLayoutStats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="8dp"  />
+            android:paddingTop="8dp" />
+
+        <!-- Etapa evolutiva del Pokemon -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Etapa Evolutiva"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:paddingTop="16dp"
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/textViewEvolutionStage"
@@ -72,16 +112,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingTop="8dp"
-            android:textSize="18sp"
-            android:text="Evolution Stage:" />
+            android:textSize="22sp"
+            android:text="" />
 
-        <Spinner
-            android:id="@+id/pokeball_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_gravity="center" />
-
+        <!-- Botón para capturar -->
         <Button
             android:id="@+id/capture_button"
             android:layout_width="wrap_content"
@@ -90,12 +124,22 @@
             android:layout_marginTop="16dp"
             android:layout_gravity="center" />
 
+        <!-- Item de captura -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Item de Captura"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:paddingTop="16dp"
+            android:layout_gravity="center" />
+
         <TextView
             android:id="@+id/textViewCaptureItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Item de captura: "
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_gravity="center" />
 
     </LinearLayout>
