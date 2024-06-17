@@ -12,11 +12,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
-
 import com.angelaavalos.pokedexls.R;
 import com.angelaavalos.pokedexls.models.EvolutionChain;
 import com.angelaavalos.pokedexls.models.Pokemon;
@@ -27,7 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.List;
 import java.util.Random;
 
@@ -35,8 +33,6 @@ public class PokemonDetailFragment extends Fragment {
     private static final String ARG_POKEMON_JSON = "pokemon_json";
 
     private Pokemon pokemon;
-    private Spinner pokeballSpinner;
-    private Button captureButton;
     private TextView textViewCaptureItem;
     private String[] pokeballs = {"Pokeball", "Superball", "Ultraball", "Masterball"};
 
@@ -65,7 +61,6 @@ public class PokemonDetailFragment extends Fragment {
         ImageView imageViewFront = view.findViewById(R.id.imageViewPokemonFront);
         ImageView imageViewBack = view.findViewById(R.id.imageViewPokemonBack);
         TextView textViewName = view.findViewById(R.id.textViewPokemonName);
-        TextView textViewDescription = view.findViewById(R.id.textViewPokemonDescription);
         TextView textViewType = view.findViewById(R.id.textViewPokemonType);
         TextView textViewAbility = view.findViewById(R.id.textViewPokemonAbility);
         TextView textViewEvolutionStage = view.findViewById(R.id.textViewEvolutionStage);
@@ -82,7 +77,7 @@ public class PokemonDetailFragment extends Fragment {
                     .into(imageViewBack);
 
             textViewName.setText(pokemon.getName());
-            textViewDescription.setText(pokemon.getDescription());
+
 
             StringBuilder types = new StringBuilder();
             for (Pokemon.Type type : pokemon.getTypes()) {
@@ -95,7 +90,7 @@ public class PokemonDetailFragment extends Fragment {
 
             // Determinar y mostrar la etapa evolutiva
             String evolutionStage = getEvolutionStage(pokemon);
-            textViewEvolutionStage.setText("Evolution Stage: " + evolutionStage);
+            textViewEvolutionStage.setText(evolutionStage);
 
             linearLayoutStats.removeAllViews();
             for (Pokemon.Stat stat : pokemon.getStats()) {
@@ -103,29 +98,33 @@ public class PokemonDetailFragment extends Fragment {
                 linearLayoutStats.addView(statView);
             }
 
-            textViewCaptureItem.setText("Item de captura: " + (pokemon.getCaptureItem() != null ? pokemon.getCaptureItem() : "N/A"));
+            textViewCaptureItem.setText((pokemon.getCaptureItem() != null ? pokemon.getCaptureItem() : "N/A"));
         }
 
-        pokeballSpinner = view.findViewById(R.id.pokeball_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, pokeballs);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        pokeballSpinner.setAdapter(adapter);
-
-        captureButton = view.findViewById(R.id.capture_button);
+        Button captureButton = view.findViewById(R.id.capture_button);
         captureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                attemptCapturePokemon();
+                showCaptureDialog();
             }
         });
 
         return view;
     }
 
-    private void attemptCapturePokemon() {
+    private void showCaptureDialog() {
+        new MaterialAlertDialogBuilder(getContext())
+                .setTitle("Selecciona el ítem de captura")
+                .setItems(pokeballs, (dialog, which) -> {
+                    String selectedPokeball = pokeballs[which];
+                    attemptCapturePokemon(selectedPokeball.toLowerCase());
+                })
+                .show();
+    }
+
+    private void attemptCapturePokemon(String selectedPokeball) {
         if (pokemon == null) return;
 
-        String selectedPokeball = pokeballSpinner.getSelectedItem().toString().toLowerCase();
         TrainerRepository trainerRepository = new TrainerRepository();
         trainerRepository.getTrainerReference().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -175,8 +174,6 @@ public class PokemonDetailFragment extends Fragment {
             }
         });
     }
-
-
 
     private double calculateCaptureProbability(String pokeball, int typePokemon) {
         double baseProbability = (600.0 - typePokemon) / 600.0;
