@@ -120,9 +120,19 @@ public class PokemonRepository {
         VolleySingleton.getInstance(context).addToRequestQueue(speciesRequest);
     }
 
+    public void searchPokemon(final Context context, String query, final Response.Listener<List<Pokemon>> listener, final Response.ErrorListener errorListener) {
+        String url = "https://pokeapi.co/api/v2/pokemon/" + query.toLowerCase();
+        GsonRequest<Pokemon> request = new GsonRequest<>(
+                Request.Method.GET,
+                url,
+                new TypeToken<Pokemon>() {},
+                response -> {
+                    List<Pokemon> result = new ArrayList<>();
+                    result.add(response);
+                    listener.onResponse(result);
+                },
+                errorListener
+        );
+        VolleySingleton.getInstance(context).addToRequestQueue(request);
+    }
 }
-
-
-
-
-

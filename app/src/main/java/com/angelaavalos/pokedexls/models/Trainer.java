@@ -92,7 +92,16 @@ public class Trainer {
 
 
     public void removeCapturedPokemon(Pokemon pokemon) {
-        capturedPokemons.remove(pokemon);
+        if (canReleasePokemon()) {
+            capturedPokemons.remove(pokemon);
+        } else {
+            throw new IllegalStateException("No puedes liberar todos los Pokémon. Debes tener al menos un Pokémon en tu equipo.");
+        }
     }
+
+    public boolean canReleasePokemon() {
+        return capturedPokemons.size() > 1;
+    }
+
 }
 

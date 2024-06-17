@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHolder> implements Filterable{
+public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHolder> implements Filterable {
     private List<Pokemon> pokemonList;
     private List<Pokemon> pokemonListFull;
     private OnItemClickListener listener;
@@ -64,12 +64,18 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
     }
 
     public void updateData(List<Pokemon> newPokemonList) {
-        int initialSize = pokemonList.size();
-        pokemonList.addAll(newPokemonList);
-        pokemonListFull.addAll(newPokemonList); // Actualiza la lista completa
-        notifyItemRangeInserted(initialSize, newPokemonList.size());
+        pokemonList.addAll(newPokemonList); // Agregar los nuevos Pokémon a la lista existente
+        pokemonListFull.addAll(newPokemonList);
+        notifyDataSetChanged();
     }
 
+    public void setData(List<Pokemon> newPokemonList) {
+        pokemonList.clear(); // Limpiar la lista existente
+        pokemonList.addAll(newPokemonList); // Agregar los nuevos Pokémon a la lista vacía
+        pokemonListFull.clear();
+        pokemonListFull.addAll(newPokemonList);
+        notifyDataSetChanged();
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView pokemonName;
@@ -129,11 +135,9 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
             if (results.values != null) {
                 pokemonList.addAll((List) results.values);
             } else {
-                // Log or handle the case when results.values is null
                 Log.e("PokemonAdapter", "Filter results are null");
             }
             notifyDataSetChanged();
         }
-
     };
 }
