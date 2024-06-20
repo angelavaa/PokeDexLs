@@ -19,6 +19,15 @@
             android:layout_height="wrap_content"
             android:text="Nombre del entrenador"
             android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"/>
+
+        <Button
+            android:id="@+id/editTrainerNameButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Editar Nombre"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"/>
 
@@ -28,7 +37,8 @@
             android:layout_height="wrap_content"
             android:hint="Actualizar nombre"
             android:textSize="20sp"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/saveTrainerNameButton"
@@ -36,7 +46,8 @@
             android:layout_height="wrap_content"
             android:text="Guardar"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/trainerMoney"
@@ -44,6 +55,7 @@
             android:layout_height="wrap_content"
             android:text="Dinero"
             android:textSize="20sp"
+            android:textStyle="bold"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"/>
 
@@ -53,6 +65,7 @@
             android:layout_height="wrap_content"
             android:text="Items"
             android:textSize="20sp"
+            android:textStyle="bold"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"/>
 
@@ -69,6 +82,7 @@
             android:layout_height="wrap_content"
             android:text="Pokémons Capturados"
             android:textSize="20sp"
+            android:textStyle="bold"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"/>
 
