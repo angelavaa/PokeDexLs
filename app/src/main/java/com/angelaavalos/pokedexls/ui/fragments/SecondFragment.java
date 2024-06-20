@@ -29,6 +29,7 @@ public class SecondFragment extends Fragment {
     private TextView trainerMoneyTextView;
     private EditText editTrainerName;
     private Button saveTrainerNameButton;
+    private Button editTrainerNameButton;
     private RecyclerView trainerItemsRecyclerView;
     private RecyclerView capturedPokemonsRecyclerView;
     private Trainer currentTrainer;
@@ -45,8 +46,15 @@ public class SecondFragment extends Fragment {
         trainerMoneyTextView = view.findViewById(R.id.trainerMoney);
         editTrainerName = view.findViewById(R.id.editTrainerName);
         saveTrainerNameButton = view.findViewById(R.id.saveTrainerNameButton);
+        editTrainerNameButton = view.findViewById(R.id.editTrainerNameButton);
         trainerItemsRecyclerView = view.findViewById(R.id.trainerItemsRecyclerView);
         capturedPokemonsRecyclerView = view.findViewById(R.id.capturedPokemonsRecyclerView);
+
+        editTrainerNameButton.setOnClickListener(v -> {
+            editTrainerName.setVisibility(View.VISIBLE);
+            saveTrainerNameButton.setVisibility(View.VISIBLE);
+            editTrainerNameButton.setVisibility(View.GONE);
+        });
 
         saveTrainerNameButton.setOnClickListener(v -> {
             String newName = editTrainerName.getText().toString().trim();
@@ -109,8 +117,9 @@ public class SecondFragment extends Fragment {
         repository.saveTrainer(currentTrainer);
         Toast.makeText(getActivity(), "Datos actualizados", Toast.LENGTH_SHORT).show();
         editTrainerName.setText("");
+        editTrainerName.setVisibility(View.GONE);
+        saveTrainerNameButton.setVisibility(View.GONE);
+        editTrainerNameButton.setVisibility(View.VISIBLE);
         trainerNameTextView.setText(currentTrainer.getName());
     }
 }
-
-
